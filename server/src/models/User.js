@@ -4,19 +4,29 @@ const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
+      required: true,
+      minLength: 3,
+      maxLength: 50,
     },
     email: {
       type: String,
+      required: true,
+      unique: true,
+      match: /^\S+@\S+\.\S+$/,
     },
     password: {
       type: String,
+      required: true,
+      minLength: 8
     },
     phoneNumber: {
       type: Number,
+      required: true,
     },
     role: {
       type: String,
-      enum: ["job_seeker", "recruiter", "admin"],
+      required: true,
+      enum: ["jobseeker", "recruiter", "admin"],
     },
     jobseeker: {
       education: [
@@ -37,7 +47,7 @@ const userSchema = new mongoose.Schema(
           companyName: {
             type: String,
           },
-          jobRole: {
+          designation: {
             type: String,
           },
           duration: {
