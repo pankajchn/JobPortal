@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
 
 const userSchema = new mongoose.Schema(
   {
@@ -17,7 +18,7 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
-      minLength: 8
+      minLength: 8,
     },
     phoneNumber: {
       type: Number,
@@ -73,6 +74,14 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+userSchema.methods.generateJWT = function () {
+  const currentUser = this;
+  const token = jwt.sign({ id: currentUser._id }, process.env.JWT_SECRET_KEY, {
+    expiresIn: "7d",
+  });
+  return token;
+};
 
 const User = mongoose.model("User", userSchema);
 

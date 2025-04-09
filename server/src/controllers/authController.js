@@ -57,13 +57,17 @@ const loginUser = async (req, res) => {
 
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(401).json({ message: "Unauthorized User." });
+      return res.status(401).json({ message: "User not found." });
     }
 
     const isValidPassword = await bcrypt.compare(password, user.password);
     if(!isValidPassword){
-      return res.status(401).json({message: "Unauthorized User."})
+      return res.status(401).json({message: "User not found."})
     }
+
+    const token = await user.generateJWT()
+    console.log("Generting token");
+    console.log(token);
 
     
 
@@ -72,4 +76,4 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser };
+module.exports = { registerUser, loginUser };
