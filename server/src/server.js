@@ -4,6 +4,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 dotenv.config();
 const authRoutes = require("./routes/authRoutes");
+const { jobRoute } = require("./routes/jobRoutes");
 
 const port = process.env.PORT || 3000;
 
@@ -13,6 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api", authRoutes);
+app.use("/api", jobRoute);
 
 connectDB()
   .then(function () {

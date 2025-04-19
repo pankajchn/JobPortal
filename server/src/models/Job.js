@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const User = require("./User");
 
 const jobSchema = new mongoose.Schema({
   jobTitle: {
@@ -15,6 +16,13 @@ const jobSchema = new mongoose.Schema({
     type: String,
     enum: ["On-site", "Remote", "Hybrid"],
     required: true,
+  },
+  city: {
+    type: String,
+    required: function () {
+      return this.location === "On-site" || this.location === "Hybrid";
+    },
+    trim: true,
   },
   salaryRange: {
     type: String,
@@ -48,8 +56,8 @@ const jobSchema = new mongoose.Schema({
   },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true
-  }
+    ref: User,
+  },
 });
 
 const Job = mongoose.model("Job", jobSchema);

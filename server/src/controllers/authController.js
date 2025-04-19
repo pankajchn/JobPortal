@@ -61,7 +61,7 @@ const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
-    console.log(user);
+
     if (!user) {
       return res.status(401).json({ message: "User not found." });
     }
@@ -72,8 +72,8 @@ const loginUser = async (req, res) => {
     }
 
     const token = await user.generateJWT();
-    console.log("Generting token");
-    console.log(token);
+
+    res.status(200).json({ message: "User login successfully." , token});
   } catch (error) {
     console.log(error);
   }
