@@ -52,7 +52,7 @@ const registerUser = async (req, res) => {
     });
   } catch (error) {
     console.error("Registration Error:", error);
-    res.status(500).json({ message: "Server Error" });
+    return res.status(500).json({ message: "Server Error" });
   }
 };
 
@@ -73,7 +73,7 @@ const loginUser = async (req, res) => {
 
     const token = await user.generateJWT();
 
-    res.status(200).json({ message: "User login successfully." , token});
+    res.status(200).json({ message: "User login successfully.", token });
   } catch (error) {
     console.log(error);
   }

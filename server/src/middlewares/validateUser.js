@@ -5,6 +5,10 @@ const validateUser = (req, res, next) => {
   const { name, email, password, phoneNumber, role, jobseeker, recruiter } =
     req.body;
 
+  if (!name || !email || !password || !phoneNumber || !role) {
+    return res.status(400).json({ message: "All fields are required." });
+  }
+
   if (!name || name.length < 3) {
     return res
       .status(400)
