@@ -8,7 +8,54 @@ import FormLabel from "@mui/material/FormLabel";
 const Signup = () => {
   const { register, handleSubmit, watch } = useForm();
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("email", data.email);
+    formData.append("password", data.password);
+    formData.append("phoneNumber", data.phoneNumber);
+    formData.append("role", data.role);
+
+    if (data.role === "jobseeker") {
+      formData.append(
+        "jobseeker",
+        JSON.stringify({
+          education: [
+            {
+              degree: data.degree,
+              institution: data.institution,
+              year: data.year,
+            },
+          ],
+          experience: [
+            {
+              companyName: data.companyName,
+              designation: data.designation,
+              duration: data.duration,
+            },
+          ],
+          skills: data.skills.split(","),
+          resume: data.resume[0],
+        })
+      );
+    }
+
+    if (data.role === "recruiter") {
+      formData.append(
+        "recruiter",
+        JSON.stringify({
+          companyName: data.companyName,
+          companyWebsite: data.companyWebsite,
+        })
+      );
+    }
+
+    
+
+    const obj = Object.fromEntries(formData.entries());
+    obj.recruiter = JSON.parse(obj.recruiter);
+    console.log(obj);
+  };
   const selectedRole = watch("role");
   console.log(selectedRole);
 
@@ -23,7 +70,10 @@ const Signup = () => {
             Search & apply to jobs from India's No.1 Job Site
           </p>
         </div>
-        <form className="w-full flex flex-col" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          className="w-full flex flex-col"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <div className="my-2">
             <label className="font-semibold">
               Full Name<span className="text-orange-500">*</span>
@@ -51,7 +101,7 @@ const Signup = () => {
               Password<span className="text-orange-500">*</span>
             </label>
             <input
-              type="text"
+              type="password"
               className="input-field"
               placeholder="(Minimum 6 characters)"
               {...register("password")}
@@ -74,13 +124,12 @@ const Signup = () => {
               Are you a jobseeker or recruiter?
             </FormLabel>
             <RadioGroup
-            className=""
               row
               aria-labelledby="demo-row-radio-buttons-group-label"
               name="row-radio-buttons-group"
             >
               <FormControlLabel
-                value="jobSeeker"
+                value="jobseeker"
                 control={<Radio />}
                 label="Jobseeker"
                 {...register("role")}
@@ -95,7 +144,7 @@ const Signup = () => {
             </RadioGroup>
           </FormControl>
 
-          {selectedRole === "jobSeeker" && (
+          {selectedRole === "jobseeker" && (
             <div className="my-2">
               <div className="flex flex-col">
                 <h2 className="text-gray-600">Education</h2>
@@ -159,7 +208,7 @@ const Signup = () => {
                       className="block input-field"
                       placeholder="Enter your job role (e.g., Frontend Developer)"
                       type="text"
-                      {...register("jobRole")}
+                      {...register("designation")}
                     />
                   </div>
                   <div className="my-1">
@@ -209,6 +258,7 @@ const Signup = () => {
                 <input
                   className="input-field"
                   placeholder="Enter your company's name (e.g., XYZ Pvt. Ltd.)"
+                  {...register("companyName")}
                 />
               </div>{" "}
               <div className="my-2">
@@ -218,6 +268,7 @@ const Signup = () => {
                 <input
                   className="input-field"
                   placeholder="Enter your company's website (e.g., www.xyz.com)"
+                  {...register("companyWebsite")}
                 />
               </div>
             </div>
