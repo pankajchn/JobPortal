@@ -7,4 +7,4 @@ const jobRoute = express.Router();
 jobRoute.post("/jobs/create", userAuth, createJobs);
 jobRoute.get("/jobs", userAuth, getJobs);
 
-module.exports = { jobRoute };
+module.exports = jobRoute;
