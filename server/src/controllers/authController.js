@@ -23,6 +23,7 @@ const registerUser = async (req, res) => {
       role,
     });
 
+
     if (role === "jobseeker") {
       newUser.jobseeker = {
         education: jobseeker.education,

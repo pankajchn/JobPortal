@@ -23,10 +23,10 @@ const validateUser = (req, res, next) => {
     return res.status(400).json({ message: "Password is required" });
   }
 
-  const pwdStrength = zxcvbn(password);
-  if (pwdStrength.score < 3) {
-    return res.status(400).json({ message: "Password is too weak" });
-  }
+  // const pwdStrength = zxcvbn(password);
+  // if (pwdStrength.score < 3) {
+  //   return res.status(400).json({ message: "Password is too weak" });
+  // }
 
   if (!phoneNumber || !/^\d{10}$/.test(phoneNumber.toString())) {
     return res.status(400).json({ message: "Phone number must be 10 digits" });
